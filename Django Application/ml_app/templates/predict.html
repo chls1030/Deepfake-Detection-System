@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    
+    {% if no_faces %}
+    <div class="alert alert-warning text-center shadow-sm" role="alert">
+        <!-- 修改 1: 错误提示 -->
+        <h4 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Processing Error</h4>
+        <p>No faces detected in the video. Please upload a video with clear faces.</p>
+        <hr>
+        <a href="{% url 'ml_app:home' %}" class="btn btn-warning">Try Again</a>
+    </div>
+    {% else %}
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 text-center">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <!-- 修改 2: 报告标题 -->
+                    <h5 class="text-muted text-uppercase mb-3">Detection Report</h5>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <video id="predict-media" class="rounded shadow-sm" width="100%" style="max-width: 600px;" controls>
+                            <source src="{{ MEDIA_URL }}{{ original_video }}" type="video/mp4" />
+                        </video>
+                    </div>
+                    
+                    <div class="mt-4">
+                        {% if output == "REAL" %}
+                            <div class="alert alert-success d-inline-block px-5 py-3 rounded-pill shadow-sm">
+                                <!-- 修改 3: 真实结果 -->
+                                <h2 class="m-0"><i class="fas fa-check-circle"></i> REAL VIDEO</h2>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger d-inline-block px-5 py-3 rounded-pill shadow-sm">
+                                <!-- 修改 4: 伪造结果 -->
+                                <h2 class="m-0"><i class="fas fa-times-circle"></i> FAKE VIDEO</h2>
+                            </div>
+                        {% endif %}
+                        <!-- 修改 5: 置信度 -->
+                        <p class="mt-2 text-muted">Confidence: <span class="font-weight-bold">{{ confidence }}%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- 分帧预览 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom-0">
+                    <!-- 修改 6: 视频分帧标题 -->
+                    <h5 class="mb-0 text-primary"><i class="fas fa-film mr-2"></i>Frames Split</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex overflow-auto pb-3" style="gap: 10px; white-space: nowrap;">
+                        {% for each_image in preprocessed_images %}
+                        <img src="{% static each_image %}" class="rounded shadow-sm" style="height: 150px; width: auto; object-fit: cover;" />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 人脸裁剪 -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom-0">
+                    <!-- 修改 7: 人脸裁剪标题 -->
+                    <h5 class="mb-0 text-primary"><i class="fas fa-user-circle mr-2"></i>Cropped Faces</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex overflow-auto pb-3" style="gap: 10px; white-space: nowrap;">
+                        {% for each_image in faces_cropped_images %}
+                        <img src="{% static each_image %}" class="rounded border" style="height: 120px; width: auto;" />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <!-- 修改 8: 返回按钮 -->
+        <a href="{% url 'ml_app:home' %}" class="btn btn-outline-primary rounded-pill px-4"><i class="fas fa-arrow-left mr-2"></i>Detect Next Video</a>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js_cripts %}
+<script src="{% static 'js/face-api.min.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    const video = document.getElementById("predict-media");
+    if(!video) return;
+
+    Promise.all([
+      faceapi.nets.ssdMobilenetv1.loadFromUri('/static/json'),
+      faceapi.nets.tinyFaceDetector.loadFromUri("/static/json")
+    ]);
+
+    var detectionTimeout;
+    
+    video.addEventListener("playing", () => {
+      var canvas;
+      if ($('canvas').length < 1) {
+        canvas = faceapi.createCanvasFromMedia(video);
+        $(canvas).css({
+            position: 'absolute',
+            top: $(video).offset().top + 'px',
+            left: $(video).offset().left + 'px',
+            pointerEvents: 'none'
+        });
+        document.body.append(canvas);
+      }
+      
+      const displaySize = { width: video.clientWidth, height: video.clientHeight };
+      faceapi.matchDimensions(canvas, displaySize);
+
+      detectionTimeout = setInterval(async () => {
+        const detections = await faceapi.detectAllFaces(video);
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        
+        $(canvas).css({
+            top: $(video).offset().top + 'px',
+            left: $(video).offset().left + 'px'
+        });
+
+        resizedDetections.forEach((result, i) => {
+          var resLabel = '{{ output }}';
+          var confidence = '{{ confidence }}';
+          var drawOptions = { label: resLabel + " " + confidence + "%" };
+          
+          if (resLabel == 'REAL'){
+            drawOptions["boxColor"] = "#28a745";
+          } else {
+            drawOptions["boxColor"] = "#dc3545";
+          }
+          const box = resizedDetections[i].box; 
+          const drawBox = new faceapi.draw.DrawBox(box, drawOptions);
+          drawBox.draw(canvas);
+        });
+      }, 100);
+    });
+
+    video.addEventListener("paused", () => {
+      clearTimeout(detectionTimeout);
+    });
+    
+    $(window).resize(function(){
+        if ($('canvas').length > 0) {
+            $('canvas').css({
+                top: $(video).offset().top + 'px',
+                left: $(video).offset().left + 'px'
+            });
+        }
+    });
+  })
+</script>
+{% endblock %}

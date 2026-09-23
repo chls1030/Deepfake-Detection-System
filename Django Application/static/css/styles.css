@@ -1,0 +1,155 @@
+/* =========================================
+   1. 全局基础样式 (Global Styles)
+   ========================================= */
+   body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f4f6f9; /* 浅灰蓝背景，比纯白更护眼 */
+    color: #333;
+    height: 100%;
+    overflow-x: hidden; /* 防止水平滚动条出现 */
+}
+
+/* 如果你还想要背景图，可以取消下面这段的注释，但建议用纯色更简洁 */
+/* 
+.bg {
+    background-image: url("/static/images/background1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+} 
+*/
+
+/* =========================================
+   2. 现代化滚动条 (Custom Scrollbar)
+   让横向滚动的图片区域看起来更精致
+   ========================================= */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1; 
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; 
+}
+
+/* =========================================
+   3. jQuery UI 滑块美化 (Override jQuery UI)
+   强制覆盖 jquery-ui.css 的老旧样式
+   ========================================= */
+/* 滑动轨道背景 */
+.ui-widget.ui-widget-content {
+    border: none;
+    background: #e9ecef;
+    border-radius: 10px;
+    height: 6px; /* 轨道变细 */
+}
+
+/* 滑块按钮 */
+.ui-slider .ui-slider-handle {
+    background: #007bff; /* Bootstrap 主色蓝 */
+    border: 2px solid #fff; /* 加个白边更精致 */
+    border-radius: 50%; /* 变成圆形 */
+    width: 18px;
+    height: 18px;
+    top: -6px; /* 垂直居中 */
+    cursor: pointer;
+    outline: none; /* 去掉点击时的蓝框 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.1s;
+}
+
+/* 滑块悬停和点击效果 */
+.ui-slider .ui-slider-handle:hover,
+.ui-slider .ui-slider-handle:active {
+    transform: scale(1.2); /* 悬停时稍微变大 */
+    background: #0056b3;
+}
+
+/* =========================================
+   4. 图片滚动容器 (Image Scrolling Containers)
+   用于 predict.html 里的分帧展示
+   ========================================= */
+#preprocessed_images, 
+#faces_images, 
+#heatmap_images {
+    white-space: nowrap; /* 强制不换行，实现横向滚动 */
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    /* 内阴影让原本平面的容器更有层次感 */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05); 
+    border: 1px solid #eee;
+}
+
+/* 图片本身的样式 */
+.preprocess, 
+.faces, 
+.heat-map {
+    display: inline-block;
+    margin-right: 15px;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.preprocess:hover, 
+.faces:hover {
+    transform: scale(1.05); /* 鼠标放上去有放大效果 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   5. 视频与 Canvas 叠加 (Video & Detection Overlay)
+   确保人脸检测框能准确覆盖在视频上
+   ========================================= */
+/* 视频容器 */
+.video-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 640px;
+}
+
+#videos, #predict-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    background: #000;
+}
+
+/* 这是一个通用类，之前HTML里可能有用到 */
+.width-400 {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* 按钮悬停动效 */
+.hover-effect {
+    transition: all 0.3s ease;
+}
+.hover-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+}
+
+/* 隐藏不必要的元素 */
+.ui-helper-hidden-accessible {
+    display: none;
+}

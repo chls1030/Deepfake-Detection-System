@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header justify-content-center bg-white border-0 pt-4">
+                <!-- 修改 1: 标题 -->
+                <h3 class="font-weight-light text-center my-2 text-primary">Upload Video</h3>
+                <!-- 修改 2: 副标题 -->
+                <p class="text-center text-muted small">Upload a video to detect Deepfake manipulation</p>
+            </div>
+            <div class="card-body px-5 pb-5">
+                <div class="mb-4 text-center">
+                    <video width="100%" height="auto" controls id="videos" class="rounded shadow-sm d-none">
+                        <source src="" id="video_source">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" id="video-upload">
+                    {% csrf_token %}
+                    
+                    <div class="form-group mb-4">
+                        <!-- 修改 3: 标签 -->
+                        <label class="font-weight-bold text-dark">Select Video File</label>
+                        <div class="custom-file">
+                            {{ form.upload_video_file }}
+                            <!-- 修改 4: 输入框占位符 -->
+                            <label class="custom-file-label" for="{{ form.upload_video_file.id_for_label }}">Choose file...</label>
+                        </div>
+                        {% if form.upload_video_file.errors %}
+                            <div class="alert alert-danger mt-2 py-1 small">
+                                {{ form.upload_video_file.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold text-dark">{{ form.sequence_length.label }}</label>
+                            <!-- 修改 5: 帧数标签 -->
+                            <span class="badge badge-primary" id="slider-value-badge">Frames: <span id="slider-value"></span></span>
+                        </div>
+                        
+                        <input type="number" hidden="hidden" id="{{ form.sequence_length.id_for_label }}" name="{{ form.sequence_length.name }}">
+                        <div id="slider" class="mt-2"></div>
+
+                        {% if form.sequence_length.errors %}
+                            <div class="alert alert-danger mt-2 py-1 small">
+                                {{ form.sequence_length.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 修改 6: 提交按钮 -->
+                    <button id="videoUpload" type="submit" name="submit" class="btn btn-primary btn-block btn-lg rounded-pill shadow-sm hover-effect">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i> Start Detection
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- 修改 7: 底部提示 -->
+        <div class="text-center mt-3 text-muted small">
+            Supported formats: MP4, AVI | Max size: 50MB
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ... 之前的 CSS ... */
+    .ui-slider-horizontal { height: 8px; background: #e9ecef; border-radius: 4px; border:none; }
+    .ui-slider .ui-slider-handle { 
+        width: 18px; height: 18px; 
+        background: #007bff; border-radius: 50%; border: none; cursor: pointer; top: -5px; outline: none;
+    }
+    
+    /* 修改 8: 这里把 '浏览' 改成 'Browse' */
+    .custom-file-label::after { content: "Browse"; } 
+    
+    #videos.d-none { display: none !important; }
+</style>
+{% endblock %}
+
+{% block js_cripts %}
+<script src="{% static 'js/script.js' %}"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script>
+    $(function () {
+        $('.custom-file-input').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            
+            var file = this.files[0];
+            if(file){
+                var url = URL.createObjectURL(file);
+                var $video = $('#videos');
+                $video.find('#video_source').attr('src', url);
+                $video[0].load();
+                $video.removeClass('d-none');
+            }
+        });
+
+        var sliderSequenceNumbers = [10, 20, 40, 60, 80, 100];
+        var slider = $("div#slider").slider({
+            value: 1,
+            min: 0,
+            max: sliderSequenceNumbers.length - 1,
+            slide: function (event, ui) {
+                $('#{{ form.sequence_length.id_for_label }}').val(sliderSequenceNumbers[ui.value]);
+                $('#slider-value').html(sliderSequenceNumbers[ui.value]);
+            }
+        });
+        $("#{{ form.sequence_length.id_for_label }}").val(sliderSequenceNumbers[$("#slider").slider("value")]);
+        $('#slider-value').html(sliderSequenceNumbers[$("#slider").slider("value")]);
+    });
+</script>
+{% endblock %}

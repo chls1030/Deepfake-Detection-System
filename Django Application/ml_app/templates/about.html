@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-primary font-weight-bold mb-4">关于本项目</h2>
+                    <p class="lead text-muted">
+                        Deepfake Detection System 是一个基于深度学习的视频伪造检测平台。我们利用先进的计算机视觉技术，帮助用户鉴别视频内容的真实性。
+                    </p>
+                    
+                    <hr class="my-4">
+                    
+                    <h4 class="mb-3">核心技术栈</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light p-3 rounded-circle mr-3">
+                                    <i class="fas fa-brain text-primary fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 font-weight-bold">ResNext & LSTM</h6>
+                                    <small class="text-muted">时空特征提取与序列分析</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light p-3 rounded-circle mr-3">
+                                    <i class="fas fa-layer-group text-success fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 font-weight-bold">Django Framework</h6>
+                                    <small class="text-muted">稳定高效的 Web 后端架构</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-light rounded">
+                        <h5>免责声明</h5>
+                        <p class="small text-muted mb-0">
+                            本系统仅供学术研究和演示使用。检测结果仅供参考，不保证 100% 的准确率。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+# 忽略 Python 缓存
+__pycache__/
+*.py[cod]
+
+# 忽略你刚才下载的本地安装包
+*.whl
+
+# 忽略过大的 AI 模型文件 (防止超过100MB报错)
+*.h5
+*.pt
+*.pth
+*.pkl
+*.weights
+
+# 忽略虚拟环境 (如果有)
+venv/
+env/

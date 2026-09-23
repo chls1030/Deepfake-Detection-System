@@ -1,0 +1,58 @@
+<!-- 文件路径: templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection System</title>
+    
+    <!-- 引入 Bootstrap 4 CSS (使用CDN) -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- 引入 Google Fonts (Inter字体，看起来很高级) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- 自定义 CSS 样式 -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9; /* 浅灰蓝背景，护眼且高级 */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* 让内容区域撑开，保证footer永远在底部 */
+        main {
+            flex: 1;
+        }
+    </style>
+    
+    <!-- 这里预留给具体页面添加额外的CSS -->
+    {% block css %}{% endblock %}
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    {% include 'nav-bar.html' %}
+
+    <!-- 主要内容区域 -->
+    <main class="py-5"> <!-- py-5 增加了上下的间距 -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- 底部页脚 -->
+    {% include 'footer.html' %}
+
+    <!-- JS 脚本 (使用CDN) -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"></script>
+
+    {% block js_cripts %}
+    {% endblock %}
+</body>
+</html>
