@@ -1,31 +1,59 @@
-# Deepfake Detection System (ResNeXt & LSTM with Custom UI)
+# Deepfake Detection System: An End-to-End Spatio-Temporal Approach
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
-![Framework](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)
 
-> **Acknowledgment & Contribution Declaration:** 
-> The core deep learning architecture (ResNeXt + LSTM) and model training methodologies referenced in this repository are based on the open-source work by Abhijit Jadhav et al. 
-> **My primary contribution to this project is the independent design, development, and integration of the entire Django-based frontend web application**, providing a seamless, user-friendly interface for the backend detection model.
+> **Graduate Research Project & Contribution Declaration** 
+> This repository showcases an independent experimental project completed during my graduate studies. While the core Spatio-Temporal deep learning architecture (ResNeXt + LSTM) builds upon the foundational open-source work of Abhijit Jadhav et al., **my primary contribution lies in the end-to-end system engineering and deployment.** I independently designed, developed, and dockerized a comprehensive Django-based web application, seamlessly integrating the PyTorch inference pipeline to enable real-time, user-friendly deepfake detection.
 
-## 📖 Overview
-This repository contains a comprehensive Deepfake Detection System. The project aims to identify manipulated facial videos utilizing a Spatio-Temporal deep learning architecture. My work focuses on bridging the gap between complex AI models and end-users by building a robust, fully Dockerized Django web interface for real-time inference.
+## 📖 Project Overview
+With the rapid proliferation of hyper-realistic AI-generated media, detecting manipulated facial videos (Deepfakes) has become a critical challenge in multimedia forensics. This project tackles the problem by deploying a Spatio-Temporal neural network architecture. My objective was to bridge the gap between complex backend AI models and practical usability by engineering a robust, fully containerized web interface for real-time video inference and visualization.
 
-## 💻 Web Interface Showcase (My Contribution)
-*(注：建议你在这里放 1-2 张你自己设计的网页前端截图，展示你的工作成果。截图上传到项目里后，替换下面的链接即可)*
-> **[TODO: Add screenshot of your Django Web Interface here]**
-> `![Web UI](github_assets/my_custom_ui_screenshot.png)`
+## 🎥 Demonstration & Visuals
+*(Note for you: It's highly recommended to convert a short segment of your video into a `.gif` file to display directly in the README, and link the full video to YouTube/Bilibili/Google Drive.)*
+
+### System Demo Video
+[![Watch the video](https://img.shields.io/badge/Watch-Demo_Video-red?style=for-the-badge&logo=youtube)](YOUR_VIDEO_LINK_HERE)  
+*Click the badge above to watch the full demonstration of the system in action.*
+
+### Real-Time Inference Interface
+*(Note for you: Replace `demo.gif` and `screenshot.png` with your actual files in the `github_assets` folder)*
+### Real-Time Inference Interface
+
+<p align="center">
+  <!-- 第一张图：展示系统主页或上传界面 -->
+  <img src="github_assets/ui_home.png" alt="System Homepage" width="700"/>
+  <br>
+  <em>Figure 1: The intuitive Django-based web interface designed for easy video uploading.</em>
+</p>
+
+<p align="center">
+  <!-- 第二张图：展示检测结果页面（包含Fake/Real概率和视频帧） -->
+  <img src="github_assets/ui_result1.png" alt="Detection Result" width="700"/>
+  <br>
+  <em>Figure 2: Real-time inference results displaying the authenticity probability and frame-level analysis.</em>
+</p>
+<p align="center">  
+<!-- 第三张图：展示检测结果页面（包含Fake/Real概率和视频帧） -->  
+<img src="github_assets/ui_result2.png" alt="Detection Result" width="700"/>  
+<br>  
+<em>Figure 2: Real-time inference results displaying the authenticity probability and frame-level analysis.</em>
+</p>
 
 ## 🔬 Backend Methodology (Referenced Architecture)
-The backend detection system utilizes a Spatio-Temporal architecture to capture both frame-level artifacts and temporal inconsistencies:
-1. **Spatial Feature Extraction:** A pre-trained **ResNeXt50** Convolutional Neural Network (CNN) is utilized via transfer learning to extract high-level spatial feature vectors from individual facial frames.
-2. **Temporal Sequence Analysis:** An **LSTM (Long Short-Term Memory)** network processes the sequential features extracted by the CNN to analyze the temporal dynamics, detecting unnatural flickers or temporal anomalies.
+The core detection engine employs a hybrid Spatio-Temporal architecture designed to capture both frame-level visual artifacts and temporal inconsistencies inherent in synthesized videos:
 
-## 📊 Experimental Results
-Extensive experiments demonstrate the impact of the number of frames processed per video on detection accuracy (evaluated on a dataset of 6,000 videos).
+1. **Spatial Feature Extraction (ResNeXt50):** 
+   A Convolutional Neural Network (CNN) is utilized as a spatial feature extractor. Transfer learning is applied to a pre-trained ResNeXt50 model to extract high-dimensional semantic representations from individual isolated facial frames.
+2. **Temporal Sequence Analysis (LSTM):** 
+   Deepfakes often exhibit unnatural temporal dynamics (e.g., abnormal blinking, micro-flickers). A Long Short-Term Memory (LSTM) network takes the sequential spatial features generated by the CNN to model these temporal dependencies and output a final authenticity probability.
 
-| Model Checkpoint | Videos | Frames per Video | Accuracy |
+## 📊 Experimental Results & Model Performance
+Extensive evaluation was conducted to analyze the impact of temporal sequence length (number of frames processed per video) on the model's predictive accuracy. The evaluation was performed on a dataset comprising 6,000 videos.
+
+| Model Checkpoint | Dataset Size | Frames Processed per Video | Inference Accuracy |
 | :--- | :---: | :---: | :---: |
 | `model_84_acc_10_frames.pt` | 6000 | 10 | 84.21% |
 | `model_87_acc_20_frames.pt` | 6000 | 20 | 87.79% |
@@ -34,11 +62,23 @@ Extensive experiments demonstrate the impact of the number of frames processed p
 | `model_91_acc_80_frames.pt` | 6000 | 80 | 91.49% |
 | **`model_93_acc_100_frames.pt`**| **6000** | **100** | **93.58%**|
 
-## 📁 Directory Structure
+> **Conclusion:** The empirical results demonstrate a positive correlation between the temporal receptive field (frames per video) and the detection accuracy, peaking at 93.58% when analyzing 100 consecutive frames, highlighting the importance of temporal data in deepfake forensics.
+
+## 🛠️ Technical Stack Demonstrated
+- **Deep Learning Framework:** PyTorch, Torchvision
+- **Computer Vision:** OpenCV, MTCNN (for face extraction)
+- **Backend & Web Framework:** Python, Django
+- **Deployment & DevOps:** Docker, Docker Compose
+- **Frontend:** HTML5, CSS3, JavaScript (Bootstrap)
+
+## 📁 Repository Structure
 ```text
 .
-├── Django Application/    # Custom-designed Dockerized web application (My Contribution)
-├── Model Creation/        # Data preprocessing and PyTorch model scripts (Referenced)
-├── Documentation/         # Project documentation and reports
-├── github_assets/         # Images used in this README
+├── Django Application/    # Custom-developed Django web application (My Contribution)
+│   ├── app/               # Views, URLs, and real-time inference logic
+│   ├── templates/         # UI/UX design (HTML/CSS/JS)
+│   └── Dockerfile         # Containerization script
+├── Model Creation/        # Data preprocessing and PyTorch training scripts (Referenced)
+├── Documentation/         # Project documentation, academic reports, and setup guides
+├── github_assets/         # Media assets (GIFs, Screenshots) for README
 └── README.md
