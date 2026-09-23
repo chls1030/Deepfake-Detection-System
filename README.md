@@ -14,11 +14,7 @@ With the rapid proliferation of hyper-realistic AI-generated media, detecting ma
 ## 🎥 Demonstration & Visuals
 
 
-### Real-Time Inference Interface
-*(Note for you: Replace `demo.gif` and `screenshot.png` with your actual files in the `github_assets` folder)*
-### Real-Time Inference Interface
 
-### Real-Time Inference Interface
 
 <p align="center">  
   <!-- 修复了这里的文件名，加上了 .png.png -->  
