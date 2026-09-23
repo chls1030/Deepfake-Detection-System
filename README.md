@@ -22,24 +22,26 @@ With the rapid proliferation of hyper-realistic AI-generated media, detecting ma
 *(Note for you: Replace `demo.gif` and `screenshot.png` with your actual files in the `github_assets` folder)*
 ### Real-Time Inference Interface
 
-<p align="center">
-  <!-- 第一张图：展示系统主页或上传界面 -->
-  <img src="github_assets/ui_home.png" alt="System Homepage" width="700"/>
-  <br>
+### Real-Time Inference Interface
+
+<p align="center">  
+  <!-- 修复了这里的文件名，加上了 .png.png -->  
+  <img src="github_assets/ui_home.png.png" alt="System Homepage" width="700"/>  
+  <br>  
   <em>Figure 1: The intuitive Django-based web interface designed for easy video uploading.</em>
 </p>
 
-<p align="center">
-  <!-- 第二张图：展示检测结果页面（包含Fake/Real概率和视频帧） -->
-  <img src="github_assets/ui_result1.png.png" alt="Detection Result" width="700"/>
-  <br>
-  <em>Figure 2: Real-time inference results displaying the authenticity probability and frame-level analysis.</em>
-</p>
 <p align="center">  
-<!-- 第三张图：展示检测结果页面（包含Fake/Real概率和视频帧） -->  
-<img src="github_assets/ui_result2.png" alt="Detection Result" width="700"/>  
-<br>  
-<em>Figure 2: Real-time inference results displaying the authenticity probability and frame-level analysis.</em>
+  <img src="github_assets/ui_result1.png" alt="Detection Result" width="700"/>  
+  <br>  
+  <em>Figure 2: Real-time inference results displaying the authenticity probability and confidence score.</em>
+</p>
+
+<p align="center">  
+  <!-- 把这里的标号改成了 Figure 3，避免和上面重复 -->  
+  <img src="github_assets/ui_result2.png" alt="Frame Analysis" width="700"/>  
+  <br>  
+  <em>Figure 3: Detailed frame-level analysis and split view for deepfake artifacts detection.</em>
 </p>
 
 ## 🔬 Backend Methodology (Referenced Architecture)
