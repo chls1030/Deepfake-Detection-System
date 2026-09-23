@@ -31,7 +31,7 @@ With the rapid proliferation of hyper-realistic AI-generated media, detecting ma
 
 <p align="center">
   <!-- 第二张图：展示检测结果页面（包含Fake/Real概率和视频帧） -->
-  <img src="github_assets/ui_result1.png" alt="Detection Result" width="700"/>
+  <img src="github_assets/ui_result1.png.png" alt="Detection Result" width="700"/>
   <br>
   <em>Figure 2: Real-time inference results displaying the authenticity probability and frame-level analysis.</em>
 </p>
