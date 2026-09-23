@@ -12,11 +12,7 @@
 With the rapid proliferation of hyper-realistic AI-generated media, detecting manipulated facial videos (Deepfakes) has become a critical challenge in multimedia forensics. This project tackles the problem by deploying a Spatio-Temporal neural network architecture. My objective was to bridge the gap between complex backend AI models and practical usability by engineering a robust, fully containerized web interface for real-time video inference and visualization.
 
 ## 🎥 Demonstration & Visuals
-*(Note for you: It's highly recommended to convert a short segment of your video into a `.gif` file to display directly in the README, and link the full video to YouTube/Bilibili/Google Drive.)*
 
-### System Demo Video
-[![Watch the video](https://img.shields.io/badge/Watch-Demo_Video-red?style=for-the-badge&logo=youtube)](YOUR_VIDEO_LINK_HERE)  
-*Click the badge above to watch the full demonstration of the system in action.*
 
 ### Real-Time Inference Interface
 *(Note for you: Replace `demo.gif` and `screenshot.png` with your actual files in the `github_assets` folder)*
